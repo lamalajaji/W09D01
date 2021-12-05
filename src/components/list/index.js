@@ -60,6 +60,20 @@ const List = () => {
     }
   };
 
+  ///// remove a task
+  const removeTask = async (id) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/todo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      getAllTasks(token);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       {todos.map((task) => (
@@ -70,6 +84,7 @@ const List = () => {
             name="edit"
             onChange={(e) => editTask(task._id, e.target.value)}
           />
+          <button onClick={() => removeTask(task._id)}>Delete</button>
         </div>
       ))}
       <input
