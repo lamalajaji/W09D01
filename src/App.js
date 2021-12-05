@@ -11,10 +11,9 @@ export default class App extends Component {
     return (
       <div>
         <Routes>
-          <Route path="/" element={<Login />}>
+          <Route path="/" element={<Login />}/>
             <Route exact path="/list" element={<List />} />
-            <Route path="signup" element={<Register />}></Route>
-          </Route>
+            <Route path="signup" element={<Register />}/>
         </Routes>
 
        
