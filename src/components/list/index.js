@@ -7,6 +7,7 @@ const List = () => {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
 
+  ///// display all todos list
   const getAllTasks = async (token) => {
     try {
       const list = await axios.get(`${process.env.REACT_APP_BASE_URL}/todos`, {
@@ -20,6 +21,7 @@ const List = () => {
     }
   };
 
+  ///// add new task
   const addTask = async () => {
     try {
       await axios.post(
@@ -36,8 +38,48 @@ const List = () => {
     } catch (error) {
       console.log(error);
     }
+    getAllTasks(token);
   };
-  return <div>list</div>;
+
+  //// edit task
+
+  const editTask = async (id, value) => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/edit/${id}`,
+        {
+          task: value,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      getAllTasks(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div>
+      {todos.map((task) => (
+        <div key={task._id}>
+          <li>{task.task}</li>
+          <input
+            type="text"
+            name="edit"
+            onChange={(e) => editTask(task._id, e.target.value)}
+          />
+        </div>
+      ))}
+      <input
+        type="text"
+        name="task"
+        placeholder="Add task"
+        onChange={(e) => setTodos([...todos], e.target.value)}
+      />
+    </div>
+  );
 };
 
 export default List;
